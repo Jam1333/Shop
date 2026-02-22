@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'dotnet test --no-build --configuration Release --verbosity normal'
+                sh 'dotnet test --no-build --configuration Release --verbosity normal Shop.slnx'
             }
         }
         stage('Deploy') {
