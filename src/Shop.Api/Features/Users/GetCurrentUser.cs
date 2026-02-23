@@ -24,7 +24,14 @@ public sealed class GetCurrentUser : ICarterModule
 
                 var currentUser = await userManager.FindByIdAsync(currentUserId);
 
-                return Results.Ok(currentUser);
+                if (currentUser is null)
+                {
+                    return Results.Unauthorized();
+                }
+
+                var roles = userManager.GetRolesAsync(currentUser);
+
+                return Results.Ok(new { info = currentUser, roles });
             })
             .WithTags(nameof(ApplicationUser));
     }
