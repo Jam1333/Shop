@@ -29,7 +29,7 @@ public sealed class GetCurrentUser : ICarterModule
                     return Results.Unauthorized();
                 }
 
-                var roles = userManager.GetRolesAsync(currentUser);
+                var roles = await userManager.GetRolesAsync(currentUser);
 
                 return Results.Ok(new { info = currentUser, roles });
             })
