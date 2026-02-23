@@ -48,6 +48,19 @@ builder.Services.ConfigureHttpJsonOptions(opt =>
     opt.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowClient",
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:5173",
+                                             "http://localhost:3000")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowCredentials();
+                      });
+});
+
 builder.Services.AddCarter();
 
 var app = builder.Build();
@@ -60,6 +73,8 @@ if (app.Environment.IsDevelopment())
 
     await app.ApplyMigrationsAsync();
 }
+
+app.UseCors("AllowClient");
 
 app.UseMiddleware<JwtMiddleware>();
 
